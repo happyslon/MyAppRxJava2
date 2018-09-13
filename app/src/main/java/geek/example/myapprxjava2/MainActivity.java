@@ -45,47 +45,34 @@ public class MainActivity extends AppCompatActivity {
     ImageView image;
 
 
-
     @OnClick(R.id.btn_start)
     public void btnStart() {
         loadSave();
     }
-
     @OnClick(R.id.btn_start_con)
     public void btnStartConvert() {
-        myFlowable();
         dialog.show();
-    }
+        myFlowable();
 
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setTitle(R.string.dialog_about_title);
-        //builder.setMessage(R.string.dialog_about_message);
         builder.setCancelable(true);
-        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() { // Кнопка ОК
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss(); // Отпускает диалоговое окно
-            }
-        });
-        builder.setNegativeButton(R.string.alert_dialog_cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                disposable.dispose();
-                dialog.dismiss();
-            }
+        builder.setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss());
+        builder.setNegativeButton(R.string.alert_dialog_cancel, (dialog, which) -> {
+            disposable.dispose();
+            dialog.dismiss();
         });
         dialog = builder.create();
     }
 
     private void loadSave() {
-
         GlideApp.with(this)
                 .asBitmap()
                 .load("http://img-e.photosight.ru/a83/6804322_xlarge.jpg")
@@ -124,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
                 success = bmp.compress(Bitmap.CompressFormat.PNG, 100, outStream);
                 outStream.flush();
                 outStream.close();
-                if(emitter.isCancelled()) return;
+                if (emitter.isCancelled()) return;
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 return;
